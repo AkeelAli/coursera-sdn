@@ -63,7 +63,14 @@ class LBPolicy(ResonancePolicy):
 
     #hint: 
     # 1. get the list of hosts in portA state
+    Ahosts = self.fsm.get_portA_hosts()
     # 2. match the incoming packet's source and destination ip against that list of hosts (using pyretic predicates i.e., "match", "modify", and "if_" etc)
+    print "Akeel: Ahosts" + str(Ahosts)
+
+    for host in Ahosts:
+	if match(srcip=IP(host), dstip=IP('10.0.0.100')) or match(dstip=IP(host), scrip=IP('10.0.0.2')):
+		return self.portA_policy()
     # 3. if there is a match apply portA policy else apply portB policy 
+    return self.portB_policy()
     
     
